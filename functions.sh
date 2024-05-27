@@ -75,7 +75,7 @@ requestChangesComment() {
          -H "Content-Type: application/json" \
             "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_ISSUE_NUMBER}/reviews" \
         )
-    LAST_STATE=$(echo "${LIST}" | jq -r "last( .[] | select (.user.login | contains(\"github-actions[bot]\")) | .state )")
+    LAST_STATE=$(echo "${LIST}" | jq -r "last( .[] | select (.user.login | contains(\"${GITHUB_COMMENT_ACTOR}\")) | .state )")
     if [[ $LAST_STATE == "CHANGES_REQUESTED" ]]; then
       return 0
     fi
@@ -104,7 +104,7 @@ approvePr() {
          -H "Content-Type: application/json" \
             "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${GITHUB_ISSUE_NUMBER}/reviews" \
         )
-    LAST_STATE=$(echo "${LIST}" | jq -r "last( .[] | select (.user.login | contains(\"github-actions[bot]\")) | .state )")
+    LAST_STATE=$(echo "${LIST}" | jq -r "last( .[] | select (.user.login | contains(\"${GITHUB_COMMENT_ACTOR}\")) | .state )")
     if [[ $LAST_STATE == "APPROVED" ]]; then
       return 0
     fi
