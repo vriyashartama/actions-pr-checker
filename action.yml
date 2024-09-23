@@ -2,12 +2,6 @@ name: 'PR checker'
 description: 'Check pull request'
 runs:
   using: "composite"
-  container: ubuntu:latest
   steps:
-    - run: |
-        if [ $(dpkg-query -W -f='${Status}' jq 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
-          sudo apt --yes -y install jq;
-        fi
-      shell: bash
     - run: ${{ github.action_path }}/pr-checker.sh
       shell: bash
